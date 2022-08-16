@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Project2</string>
+    <string-array name="categories">
+        <item>Category…</item>
+        <item>Restaurants</item>
+        <item>Car</item>
+        <item>Cell Phone</item>
+        <item>Travel</item>
+        <item>Groceries</item>
+        <item>Gym</item>
+    </string-array>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>
