@@ -97,6 +97,7 @@ public class TransactionEntryFragment extends DialogFragment {
             mTypeSpinner = view.findViewById(R.id.type_spinner);
             ArrayAdapter<CharSequence> spinnerAdapter2 = ArrayAdapter.createFromResource(getContext(), R.array.types, android.R.layout.simple_spinner_dropdown_item);
             spinnerAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mTypeSpinner.setAdapter(spinnerAdapter2);
 
 
             mAmountEditText = view.findViewById(R.id.amount_edit_text);

@@ -9,13 +9,14 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.example.project2.transaction.Ledger;
 import com.example.project2.transaction.Transaction;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity  {
     TableLayout mTransactionTable;
-    ArrayList<Transaction> Transaction
+    Ledger mLedger = new Ledger();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,19 +34,36 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     public void addTransaction(Transaction transaction){
+        mLedger.addTransaction(transaction);
+        refreshTable();
+    }
+
+    private void refreshTable() {
+        mTransactionTable.removeAllViews();
         mTransactionTable.setStretchAllColumns(true);
         mTransactionTable.bringToFront();
-        for(int i = 0; i < 10; i++){
+        for(int i = 0; i < mLedger.getTransactions().size(); i++){
+
+            Transaction t =  mLedger.getTransactions().get(i);
             TableRow tr =  new TableRow(this);
-            TextView payeeCell = new TextView(this);
-            payeeCell.setText("1");
-            TextView c2 = new TextView(this);
-            c2.setText(String.valueOf(2));
-            TextView c3 = new TextView(this);
-            c3.setText(String.valueOf(100));
+
+            TextView typeCell = new TextView(this);
+            typeCell.setText(t.getType());
+
+            TextView payeeCell= new TextView(this);
+            payeeCell.setText(t.getPayee());
+
+            TextView categoryCell = new TextView(this);
+            categoryCell.setText(t.getCategory());
+
+            TextView amountCell = new TextView(this);
+            amountCell.setText(String.valueOf(t.getAmount()));
+
+            tr.addView(typeCell);
             tr.addView(payeeCell);
-            tr.addView(c2);
-            tr.addView(c3);
+            tr.addView(categoryCell);
+            tr.addView(amountCell);
+
             mTransactionTable.addView(tr);
         }
     }
