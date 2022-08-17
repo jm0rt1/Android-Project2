@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mTransactionTable = (TableLayout)findViewById(R.id.transaction_table);
-
+        refreshTable();
 
     }
 
@@ -42,21 +42,41 @@ public class MainActivity extends AppCompatActivity  {
         mTransactionTable.removeAllViews();
         mTransactionTable.setStretchAllColumns(true);
         mTransactionTable.bringToFront();
+        TableRow tr =  new TableRow(this);
+
+        TextView typeCell = new TextView(this);
+        typeCell.setText(R.string.type);
+
+        TextView payeeCell= new TextView(this);
+        payeeCell.setText(R.string.payee);
+
+        TextView categoryCell = new TextView(this);
+        categoryCell.setText(R.string.category);
+
+        TextView amountCell = new TextView(this);
+        amountCell.setText(R.string.amount);
+
+        tr.addView(typeCell);
+        tr.addView(payeeCell);
+        tr.addView(categoryCell);
+        tr.addView(amountCell);
+        mTransactionTable.addView(tr);
+
         for(int i = 0; i < mLedger.getTransactions().size(); i++){
 
             Transaction t =  mLedger.getTransactions().get(i);
-            TableRow tr =  new TableRow(this);
+            tr =  new TableRow(this);
 
-            TextView typeCell = new TextView(this);
+            typeCell = new TextView(this);
             typeCell.setText(t.getType());
 
-            TextView payeeCell= new TextView(this);
+            payeeCell= new TextView(this);
             payeeCell.setText(t.getPayee());
 
-            TextView categoryCell = new TextView(this);
+            categoryCell = new TextView(this);
             categoryCell.setText(t.getCategory());
 
-            TextView amountCell = new TextView(this);
+            amountCell = new TextView(this);
             amountCell.setText(String.valueOf(t.getAmount()));
 
             tr.addView(typeCell);

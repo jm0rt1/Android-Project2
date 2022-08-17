@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Project2</string>
 
-    <string name="category">Category…</string>
+    <string name="category_dot_dot_dot">Category…</string>
     <string name="restaurants">Restaurants</string>
     <string name="car">Car</string>
     <string name="cell_phone">Cell Phone</string>
@@ -9,12 +9,17 @@
     <string name="groceries">Groceries</string>
     <string name="gym">Gym</string>
 
-    <string name="type">Type…</string>
+    <string name="type_dot_dot_dot">Type…</string>
     <string name="income">Income</string>
     <string name="expense">Expense</string>
+    <string name="amount">Amount</string>
+    <string name="payee">Payee</string>
+    <string name="type">Type</string>
+    <string name="category">Category</string>
+
 
     <string-array name="categories">
-        <item>@string/category</item>
+        <item>@string/category_dot_dot_dot</item>
         <item>@string/restaurants</item>
         <item>@string/car</item>
         <item>@string/cell_phone</item>
@@ -24,7 +29,7 @@
     </string-array>
 
     <string-array name="types">
-        <item>@string/type</item>
+        <item>@string/type_dot_dot_dot</item>
         <item>@string/income</item>
         <item>@string/expense</item>
     </string-array>
