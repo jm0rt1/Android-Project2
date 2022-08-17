@@ -12,7 +12,7 @@ public class Ledger {
 
     }
 
-    public addTransaction(Transaction transaction){
+    public void addTransaction(Transaction transaction){
         mTransactions.add(transaction);
     }
 }
