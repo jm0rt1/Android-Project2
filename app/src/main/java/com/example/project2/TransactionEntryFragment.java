@@ -1,7 +1,14 @@
 package com.example.project2;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
@@ -10,9 +17,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
-import android.widget.TextView;
+
+import com.example.project2.transaction.Transaction;
+
+import java.lang.reflect.Array;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,22 +37,21 @@ public class TransactionEntryFragment extends DialogFragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     public static final String TAG = "TransactionEntry";
-    private Spinner mSpinner;
+    private Spinner mCategorySpinner;
+    private Spinner mTypeSpinner;
 
+
+    private EditText mPayeeEditText;
+    private EditText mAmountEditText;
+//    private EditText mPayeeEditText;
+
+    MainActivity mMainActivity;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment TransactionEntryFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static TransactionEntryFragment newInstance(String param1, String param2) {
+
+    public static TransactionEntryFragment newInstance(String param1,String param2) {
         TransactionEntryFragment fragment = new TransactionEntryFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
@@ -57,29 +66,68 @@ public class TransactionEntryFragment extends DialogFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        mMainActivity = (MainActivity)getActivity();
+
+
+
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
 
     }
 
+    @NonNull
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        String title = getArguments().getString("title");
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(title);
+        builder.setMessage("Add New Transaction");
 
-        View view = inflater.inflate(R.layout.fragment_transaction_entry, container, false);
+        // Edited: Overriding onCreateView is not necessary in your case
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View view = inflater.inflate(R.layout.fragment_transaction_entry, null);
+        builder.setView(view);
+
         try{
-            // Inflate the layout for this fragment
-            mSpinner = view.findViewById(R.id.category_spinner);
+            mCategorySpinner = view.findViewById(R.id.category_spinner);
             ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.categories, android.R.layout.simple_spinner_dropdown_item);
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            mSpinner.setAdapter(spinnerAdapter);
+            mCategorySpinner.setAdapter(spinnerAdapter);
+
+            mTypeSpinner = view.findViewById(R.id.type_spinner);
+            ArrayAdapter<CharSequence> spinnerAdapter2 = ArrayAdapter.createFromResource(getContext(), R.array.types, android.R.layout.simple_spinner_dropdown_item);
+            spinnerAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
+            mAmountEditText = view.findViewById(R.id.amount_edit_text);
+            mPayeeEditText = view.findViewById(R.id.payee_edit_text);
+
+
+
         } catch (Exception e) {
             Log.e(TAG, e.toString());
             throw e;
         }
-        return view;
+
+        builder.setPositiveButton("OK",  new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Transaction transaction = new Transaction(mPayeeEditText.getText().toString(),
+                        mCategorySpinner.getSelectedItem().toString(),
+                        mTypeSpinner.getSelectedItem().toString(),
+                        Float.parseFloat(mAmountEditText.getText().toString()));
+
+                mMainActivity.addTransaction(transaction);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        return builder.create();
     }
+
 }

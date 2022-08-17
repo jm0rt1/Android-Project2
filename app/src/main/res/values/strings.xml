@@ -1,13 +1,34 @@
 <resources>
     <string name="app_name">Project2</string>
+
+
+    <string name="type">Type…</string>
+    <string name="restaurants">Restaurants</string>
+    <string name="car">Car</string>
+    <string name="cell_phone">Cell Phone</string>
+    <string name="travel">Travel</string>
+    <string name="groceries">Groceries</string>
+    <string name="gym">Gym</string>
+
+
+    <string name="category">Category…</string>
+    <string name="income">Income</string>
+    <string name="expense">Gym</string>
+
     <string-array name="categories">
-        <item>Category…</item>
-        <item>Restaurants</item>
-        <item>Car</item>
-        <item>Cell Phone</item>
-        <item>Travel</item>
-        <item>Groceries</item>
-        <item>Gym</item>
+        <item>@string/category</item>
+        <item>@string/restaurants</item>
+        <item>@string/car</item>
+        <item>@string/cell_phone</item>
+        <item>@string/travel</item>
+        <item>@string/groceries</item>
+        <item>@string/gym</item>
+    </string-array>
+
+    <string-array name="types">
+        <item>@string/type</item>
+        <item>@string/income</item>
+        <item>@string/expense</item>
     </string-array>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
