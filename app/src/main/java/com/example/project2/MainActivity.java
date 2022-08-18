@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -12,19 +13,37 @@ import android.widget.TextView;
 import com.example.project2.transaction.Ledger;
 import com.example.project2.transaction.Transaction;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity  {
+    private static final String TAG = "MainActivity";
     TableLayout mTransactionTable;
-    Ledger mLedger = new Ledger();
+    Ledger mLedger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mTransactionTable = (TableLayout)findViewById(R.id.transaction_table);
+
+        initializeLedger();
         refreshTable();
 
+    }
+
+    private void initializeLedger() {
+        boolean ledgerFound = false;
+        try{
+            mLedger = Ledger.loadFromFile(getApplicationContext(), "file.json");
+            ledgerFound = true;
+
+        } catch (Exception e){
+            Log.e(TAG, e.toString());
+        }
+        if (!ledgerFound){
+            mLedger = new Ledger(getApplicationContext(),"file.json");
+        }
     }
 
     public void showAddTransactionDialog(View v) {
@@ -36,6 +55,11 @@ public class MainActivity extends AppCompatActivity  {
     public void addTransaction(Transaction transaction){
         mLedger.addTransaction(transaction);
         refreshTable();
+        try {
+            mLedger.save();
+        } catch (IOException e) {
+            Log.e(TAG,e.toString());
+        }
     }
 
     private void refreshTable() {
