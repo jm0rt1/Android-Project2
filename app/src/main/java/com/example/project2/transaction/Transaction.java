@@ -15,7 +15,11 @@ public class Transaction {
         mPayee = payee;
         mCategory = category;
         mType = type;
-        mAmount = amount;
+        if (mType.equals("Expense") && amount >0){
+            mAmount = -amount;
+        } else {
+            mAmount = amount;
+        }
     }
     public String getPayee() {
         return mPayee;
