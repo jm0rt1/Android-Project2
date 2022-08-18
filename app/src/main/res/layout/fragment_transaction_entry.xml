@@ -33,7 +33,7 @@
                 android:id="@+id/payee_edit_text"
                 android:layout_width="283dp"
                 android:layout_height="46dp"
-                android:hint="Payee"
+                android:hint="@string/payee"
                 android:layout_gravity="center"
 
                 android:inputType="text" />
@@ -53,7 +53,7 @@
                 android:layout_height="46dp"
                 android:layout_gravity="center"
                 android:ems="10"
-                android:hint="Amount"
+                android:hint="@string/amount"
                 android:inputType="numberDecimal" />
 
             <Button
@@ -61,8 +61,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:text="@string/import_photo_of_receipt" />
 
-                android:text="Button" />
+            <ImageView
+                android:contentDescription="@string/attachment"
+                android:id="@+id/imageView"
+                android:layout_width="263dp"
+                android:layout_height="199dp"
+                android:layout_gravity="center"
+                android:src="@drawable/money_icon_foreground" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

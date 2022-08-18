@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Project2</string>
+    <string name="app_name">Cheque Register</string>
 
     <string name="category_dot_dot_dot">Category…</string>
     <string name="restaurants">Restaurants</string>
@@ -8,6 +8,7 @@
     <string name="travel">Travel</string>
     <string name="groceries">Groceries</string>
     <string name="gym">Gym</string>
+    <string name="paycheck">Paycheck</string>
 
     <string name="type_dot_dot_dot">Type…</string>
     <string name="income">Income</string>
@@ -26,6 +27,7 @@
         <item>@string/travel</item>
         <item>@string/groceries</item>
         <item>@string/gym</item>
+        <item>@string/paycheck</item>
     </string-array>
 
     <string-array name="types">
@@ -38,6 +40,8 @@
     <string name="_0">$0</string>
     <string name="plus">+</string>
     <string name="clear">clear</string>
+    <string name="import_photo_of_receipt">Import Photo of Receipt</string>
+    <string name="attachment">Attachment</string>
 
 
 </resources>

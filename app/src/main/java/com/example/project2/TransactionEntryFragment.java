@@ -3,21 +3,32 @@ package com.example.project2;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.example.project2.transaction.Transaction;
@@ -39,8 +50,12 @@ public class TransactionEntryFragment extends DialogFragment {
     public static final String TAG = "TransactionEntry";
     private Spinner mCategorySpinner;
     private Spinner mTypeSpinner;
+    private Button mButton;
+    private ImageView mImageView;
+    ActivityResultLauncher<Intent> launcher;
 
 
+    int SELECT_PICTURE = 200;
     private EditText mPayeeEditText;
     private EditText mAmountEditText;
 //    private EditText mPayeeEditText;
@@ -69,12 +84,43 @@ public class TransactionEntryFragment extends DialogFragment {
         mMainActivity = (MainActivity)getActivity();
 
 
-
         super.onCreate(savedInstanceState);
 
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Bitmap photo = (Bitmap) data.getExtras().get("data");
+        mImageView.setImageBitmap(photo);
+    }
+
+    // this function is triggered when
+    // the Select Image Button is clicked
+    public void imageChooser(View v) {
+
+
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        launcher.launch(takePictureIntent);
+
+    }
+
+    private void initActivityResultLauncher(View v) {
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if(result.getResultCode() == Activity.RESULT_OK)
+                        {
+                            Intent data = result.getData();
+                            ImageView image = (ImageView) v.findViewById(R.id.imageView);
+                            Bitmap b = (Bitmap) data.getExtras().get("data");
+                            image.setImageBitmap(b);
+                        }
+                    }
+                });
+    }
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -103,7 +149,10 @@ public class TransactionEntryFragment extends DialogFragment {
             mAmountEditText = view.findViewById(R.id.amount_edit_text);
             mPayeeEditText = view.findViewById(R.id.payee_edit_text);
 
-
+            mButton = view.findViewById(R.id.button);
+            mButton.setOnClickListener(this::imageChooser);
+            mImageView = view.findViewById(R.id.imageView);
+            initActivityResultLauncher(view);
 
         } catch (Exception e) {
             Log.e(TAG, e.toString());
@@ -113,24 +162,32 @@ public class TransactionEntryFragment extends DialogFragment {
         builder.setPositiveButton("OK",  new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Transaction transaction = new Transaction(mPayeeEditText.getText().toString(),
-                        mCategorySpinner.getSelectedItem().toString(),
-                        mTypeSpinner.getSelectedItem().toString(),
-                        Float.parseFloat(mAmountEditText.getText().toString()));
 
-                mMainActivity.addTransaction(transaction);
+                try{
+                    Transaction transaction = new Transaction(mPayeeEditText.getText().toString(),
+                            mCategorySpinner.getSelectedItem().toString(),
+                            mTypeSpinner.getSelectedItem().toString(),
+                            Float.parseFloat(mAmountEditText.getText().toString()));
+                    mMainActivity.addTransaction(transaction);
+                } catch (Exception e){
+                    Log.e(TAG, e.toString());
+                    dialog.dismiss();
+                    mMainActivity.showAddTransactionError();
+
+                }
                 dialog.dismiss();
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                
+
                 dialog.dismiss();
             }
         });
 
         return builder.create();
     }
+
 
 }

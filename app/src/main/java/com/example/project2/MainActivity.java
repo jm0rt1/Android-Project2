@@ -1,9 +1,15 @@
 package com.example.project2;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.FragmentManager;
 
+import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,9 +39,18 @@ public class MainActivity extends AppCompatActivity  {
         mBalanceTextView = findViewById(R.id.balance_text_view);
         initializeLedger();
         refresh();
-
+        createNotificationChannel();
     }
-
+    private void createNotificationChannel()
+    {
+        //only create the notification channel on API 26+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            NotificationChannel channel = new NotificationChannel("alert", "name", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+    }
     private void initializeLedger() {
         boolean ledgerFound = false;
         try{
@@ -72,12 +87,15 @@ public class MainActivity extends AppCompatActivity  {
     }
     private void refresh(){
         refreshBalance();
-        refreshTable();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            refreshTable();
+        }
     }
     private void refreshBalance(){
         mBalanceTextView.setText("$" + String.valueOf(mLedger.getBalance()));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void refreshTable() {
         mTransactionTable.removeAllViews();
         mTransactionTable.setStretchAllColumns(true);
@@ -136,8 +154,9 @@ public class MainActivity extends AppCompatActivity  {
             payeeCell.setPadding(Value, Value, Value, Value);
             categoryCell.setPadding(Value, Value, Value, Value);
             amountCell.setPadding(Value, Value, Value, Value);
-//            LinearLayout.LayoutParams params = new TableLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//            LinearLayout.LayoutParams params = new TableLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 //            params.setMargins(1,0,1,0);
+//
 //            typeCell.setLayoutParams(params);
 //            payeeCell.setLayoutParams(params);
 //            categoryCell.setLayoutParams(params);
@@ -155,7 +174,34 @@ public class MainActivity extends AppCompatActivity  {
             tableRowParams.setMargins(Value, Value, Value, Value);
             tr.setLayoutParams(tableRowParams);
             mTransactionTable.addView(tr);
+            final int finali = i;
+            tr.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    //show transaction in standalone activity, with attachment
+                    Log.i(TAG, "Row " + String.valueOf(finali));
+                }
+            });
         }
+    }
+
+
+    public void showAddTransactionError(){
+        final NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"alert");
+
+        builder.setContentTitle("Error Adding Transaction");
+        builder.setContentText("Please ensure all data is filled in");
+        builder.setSilent(true);
+        builder.setSmallIcon(R.drawable.ic_launcher_background);
+        manager.notify(1, builder.build());
+
+
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
+        builder1.setTitle("Could not add transaction");
+        builder1.setMessage("Be sure all sections were filled in");
+        builder1.show();
     }
 
 }
