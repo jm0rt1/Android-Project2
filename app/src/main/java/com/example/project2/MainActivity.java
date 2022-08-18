@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.project2.transaction.Ledger;
 import com.example.project2.transaction.Transaction;
@@ -181,6 +182,8 @@ public class MainActivity extends AppCompatActivity  {
                 public void onClick(View v) {
                     //show transaction in standalone activity, with attachment
                     Log.i(TAG, "Row " + String.valueOf(finali));
+                    Toast toast = Toast.makeText(getApplicationContext(),"Row " + String.valueOf(finali),Toast.LENGTH_SHORT);
+                    toast.show();
                 }
             });
         }

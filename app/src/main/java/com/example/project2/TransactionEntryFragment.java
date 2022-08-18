@@ -89,12 +89,6 @@ public class TransactionEntryFragment extends DialogFragment {
 
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Bitmap photo = (Bitmap) data.getExtras().get("data");
-        mImageView.setImageBitmap(photo);
-    }
 
     // this function is triggered when
     // the Select Image Button is clicked
