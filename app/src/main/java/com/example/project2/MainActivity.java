@@ -22,6 +22,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity  {
     private static final String TAG = "MainActivity";
     TableLayout mTransactionTable;
+    TextView mBalanceTextView;
     Ledger mLedger;
 
     @Override
@@ -29,8 +30,9 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mTransactionTable = (TableLayout)findViewById(R.id.transaction_table);
+        mBalanceTextView = findViewById(R.id.balance_text_view);
         initializeLedger();
-        refreshTable();
+        refresh();
 
     }
 
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity  {
 
     public void clear(View v){
         mLedger.clear();
-        refreshTable();
+        refresh();
     }
 
     public void showAddTransactionDialog(View v) {
@@ -61,12 +63,19 @@ public class MainActivity extends AppCompatActivity  {
 
     public void addTransaction(Transaction transaction){
         mLedger.addTransaction(transaction);
-        refreshTable();
+        refresh();
         try {
             mLedger.save();
         } catch (IOException e) {
             Log.e(TAG,e.toString());
         }
+    }
+    private void refresh(){
+        refreshBalance();
+        refreshTable();
+    }
+    private void refreshBalance(){
+        mBalanceTextView.setText("$" + String.valueOf(mLedger.getBalance()));
     }
 
     private void refreshTable() {

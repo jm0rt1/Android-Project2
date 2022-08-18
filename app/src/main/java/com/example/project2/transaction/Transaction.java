@@ -1,5 +1,7 @@
 package com.example.project2.transaction;
 
+import com.example.project2.R;
+
 public class Transaction {
 
 

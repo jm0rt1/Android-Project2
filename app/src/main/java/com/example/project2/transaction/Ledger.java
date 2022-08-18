@@ -94,6 +94,12 @@ public class Ledger {
         mTransactions.add(transaction);
     }
 
-
+    public float getBalance(){
+        float balance = 0;
+        for (int i = 0; i<mTransactions.size();i++){
+            balance += mTransactions.get(i).mAmount;
+        }
+        return balance;
+    }
 
 }

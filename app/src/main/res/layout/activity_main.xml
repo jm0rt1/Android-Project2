@@ -17,7 +17,7 @@
         app:layout_constraintHorizontal_bias="0.914"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.782" />
+        app:layout_constraintVertical_bias="0.951" />
 
     <Button
         android:id="@+id/clear_button"
@@ -48,5 +48,29 @@
             android:background="@color/black"
             android:padding="2dp" />
     </ScrollView>
+
+    <TextView
+        android:id="@+id/your_balance_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Your Balance"
+        app:layout_constraintBottom_toTopOf="@+id/balance_text_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/balance_text_view"
+        android:layout_width="94dp"
+        android:layout_height="44dp"
+        android:layout_marginBottom="76dp"
+        android:text="0$"
+        android:textAlignment="center"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
