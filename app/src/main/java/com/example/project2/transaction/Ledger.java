@@ -1,6 +1,7 @@
 package com.example.project2.transaction;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -20,7 +21,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Ledger {
-    String mFilename = "data.txt";
+    public final String TAG = "Ledger";
+    String mFilename;
     Context mContext;
 
 
@@ -36,6 +38,15 @@ public class Ledger {
         mFilename = filename;
         mContext = context;
 
+    }
+
+    public void clear(){
+        mTransactions = new ArrayList<>();
+        try{
+            save();
+        } catch (Exception e){
+            Log.e(TAG,e.toString() );
+        }
     }
 
     public static Ledger loadFromFile(Context context, String filename) throws IOException {

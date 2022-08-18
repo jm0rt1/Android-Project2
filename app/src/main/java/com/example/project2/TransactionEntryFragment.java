@@ -119,11 +119,13 @@ public class TransactionEntryFragment extends DialogFragment {
                         Float.parseFloat(mAmountEditText.getText().toString()));
 
                 mMainActivity.addTransaction(transaction);
+                dialog.dismiss();
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                
                 dialog.dismiss();
             }
         });
